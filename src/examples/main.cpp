@@ -9,7 +9,6 @@ void setup()
   Serial << endl << endl;
 
   Homie_setFirmware(FW_NAME, FW_VERSION);
-  Homie.setSetupFunction(setupHandler);
   Homie.setup();
 }
 
