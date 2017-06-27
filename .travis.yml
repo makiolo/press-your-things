@@ -19,5 +19,5 @@ install:
 
 script:
     # - platformio ci --lib="/tmp/homie-esp8266-develop" --project-conf=platformio.ini --keep-build-dir
-    - platformio ci --lib="/tmp/homie-esp8266-develop"
+    - platformio ci --lib="/tmp/homie-esp8266-develop" --board=nodemcu
     # - curl -v -F "update=@.pioenvs/nodemcu/firmware.bin" http://artifacts.myftp.biz:8080/upload.php
