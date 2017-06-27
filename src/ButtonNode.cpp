@@ -1,11 +1,3 @@
-/*
- * ButtonNode.cpp
- * Homie Node for a button with optional callback function
- *
- * Version: 1.0
- * Author: Lübbe Onken (http://github.com/luebbe)
- */
-
 #include "ButtonNode.hpp"
 #include <Homie.hpp>
 
