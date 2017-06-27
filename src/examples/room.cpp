@@ -36,19 +36,22 @@ void loopHandler()
     
       if(_presence1 != p1)
       {
-        HomieInternals::Interface::get().getSendingPromise().setNode(presence1).setProperty("presence").setQos(2).setRetained(true).overwriteSetter(false).setRange({ .isRange = false, .index = 0 }).send(p1 ? "true" : "false");
+        presence1.setProperty("presence").send(p1 ? "true" : "false");
+        // HomieInternals::Interface::get().getSendingPromise().setNode(presence1).setProperty("presence").setQos(2).setRetained(true).overwriteSetter(false).setRange({ .isRange = false, .index = 0 }).send(p1 ? "true" : "false");
         _presence1 = p1;
       }
     
       if(_presence2 != p2)
       {
-        HomieInternals::Interface::get().getSendingPromise().setNode(presence2).setProperty("presence").setQos(2).setRetained(true).overwriteSetter(false).setRange({ .isRange = false, .index = 0 }).send(p2 ? "true" : "false");
+        presence2.setProperty("presence").send(p2 ? "true" : "false");
+        // HomieInternals::Interface::get().getSendingPromise().setNode(presence2).setProperty("presence").setQos(2).setRetained(true).overwriteSetter(false).setRange({ .isRange = false, .index = 0 }).send(p2 ? "true" : "false");
         _presence2 = p2;
       }
     
       if(_presence3 != p3)
       {
-        HomieInternals::Interface::get().getSendingPromise().setNode(presence3).setProperty("presence").setQos(2).setRetained(true).overwriteSetter(false).setRange({ .isRange = false, .index = 0 }).send(p3 ? "true" : "false");
+        presence3.setProperty("presence").send(p3 ? "true" : "false");
+        // HomieInternals::Interface::get().getSendingPromise().setNode(presence3).setProperty("presence").setQos(2).setRetained(true).overwriteSetter(false).setRange({ .isRange = false, .index = 0 }).send(p3 ? "true" : "false");
         _presence3 = p3;
       }
       lastTemperatureSent = millis();
