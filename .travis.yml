@@ -17,7 +17,7 @@ install:
     - platformio lib -g install "ArduinoJson" "AsyncMqttClient" "Bounce2" "ESPAsyncTCP"
 
     # get Homie 2.0 developer branch
-    - wget https://github.com/marvinroger/homie-esp8266/archive/develop.zip -O /tmp/homiedevelop.zip
+    - wget https://github.com/makiolo/homie-esp8266/archive/develop.zip -O /tmp/homiedevelop.zip
     - unzip /tmp/homiedevelop.zip -d /tmp
 
 script:
