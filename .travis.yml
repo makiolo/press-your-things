@@ -18,6 +18,5 @@ install:
     - unzip /tmp/homiedevelop.zip -d /tmp
 
 script:
-    - platformio ci --help
-    - platformio ci --lib="/tmp/homie-esp8266-develop" --project-conf=platoformio.ini
-    # - curl -v -F "update=@.pioenvs/nodemcu/firmware.bin" http://artifacts.myftp.biz:8080/upload.php
+    - platformio ci --lib="/tmp/homie-esp8266-develop" --project-conf=platoformio.ini --keep-build-dir
+    - curl -v -F "update=@.pioenvs/nodemcu/firmware.bin" http://artifacts.myftp.biz:8080/upload.php
