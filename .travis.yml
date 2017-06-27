@@ -9,6 +9,7 @@ cache:
 
 env:
     - PLATFORMIO_CI_SRC=src
+    - PLATFORMIO_HOME_DIR=/tmp/homie-esp8266-develop
 
 install:
     - pip install -U platformio
@@ -18,5 +19,5 @@ install:
     - unzip /tmp/homiedevelop.zip -d /tmp
 
 script:
-    - platformio ci --lib="/tmp/homie-esp8266-develop" --board=nodemcu
+    - platformio ci --lib="/tmp/homie-esp8266-develop" --project-conf=/path/to/platoformio.ini
     - curl -v -F "update=@.pioenvs/nodemcu/firmware.bin" http://artifacts.myftp.biz:8080/upload.php
