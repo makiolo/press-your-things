@@ -1,8 +1,7 @@
 #include <Homie.h>
 
-#define FW_BRAND "makiolo"
 #define FW_NAME "presence"
-#define FW_VERSION "1.0.0"
+#define FW_VERSION "1.0.1"
 const char *__FLAGGED_FW_NAME = "\xbf\x84\xe4\x13\x54" FW_NAME "\x93\x44\x6b\xa7\x75";
 const char *__FLAGGED_FW_VERSION = "\x6a\x3f\x3e\x0e\xe1" FW_VERSION "\xb0\x30\x48\xd4\x1a";
 
@@ -85,8 +84,8 @@ void setup()
   pinMode(D4, INPUT);
 
   // homie
-  // Homie.disableLogging();
-  Homie_setBrand(FW_BRAND);
+  Homie.disableLogging();
+  Homie_setBrand(FW_NAME);
   Homie_setFirmware(FW_NAME, FW_VERSION);
   Homie.setSetupFunction(setupHandler).setLoopFunction(loopHandler);
   Homie.setup(); 
