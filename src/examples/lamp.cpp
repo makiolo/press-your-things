@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <Homie.h>
 
+/*
+
 #if 0
 const int PIN_RELAY = 12;
 const bool inverse_logic_relay = false;
@@ -147,3 +149,4 @@ void loop()
 {
   Homie.loop();
 }
+*/
