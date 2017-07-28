@@ -10,7 +10,6 @@ cache:
 env:
     - PLATFORMIO_CI_SRC=src
     - PLATFORMIO_CI_SRC=presence
-    - PLATFORMIO_CI_SRC=aire
     - PLATFORMIO_CI_SRC=button
 
 install:
