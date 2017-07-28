@@ -1,3 +1,4 @@
+/*
 #include <LiquidCrystal.h>
 #include <Wire.h>
 #include <WiFi.h>
@@ -63,3 +64,4 @@ void loop() {
   oled.putString(String(value));
   delay(700);
 }
+*/
