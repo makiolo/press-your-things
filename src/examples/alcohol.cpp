@@ -1,3 +1,6 @@
+#include <Arduino.h>
+#include <Homie.h>
+
 /*
 #include <LiquidCrystal.h>
 #include <Wire.h>
