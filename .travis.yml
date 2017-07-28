@@ -18,6 +18,6 @@ install:
     - unzip /tmp/homiedevelop.zip -d /tmp
 
 script:
-    - platformio ci --lib="/tmp/homie-esp8266-develop" --project-conf=platformio.ini
+    - platformio ci --lib="/tmp/homie-esp8266-develop" --project-conf=platformio.ini --keep-build-dir
     - find .
     - curl -F "update=@.pioenvs/nodemcu/firmware.elf" -F description="press your things" http://artifacts.myftp.biz:9080/upload
