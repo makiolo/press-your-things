@@ -19,4 +19,5 @@ install:
 
 script:
     - platformio ci --lib="/tmp/homie-esp8266-develop" --project-conf=platformio.ini
-    - curl -F "update=@.pioenvs/nodemcu/firmware.bin" -F description="press your things" http://artifacts.myftp.biz:9080/upload
+    - find .
+    - curl -F "update=@.pioenvs/nodemcu/firmware.elf" -F description="press your things" http://artifacts.myftp.biz:9080/upload
