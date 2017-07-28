@@ -140,8 +140,8 @@ void setup()
   //Homie.setLedPin(PIN_LED, LOW).setResetTrigger(PIN_BUTTON, LOW, 5000);
   Homie.disableLedFeedback();
   Homie.disableLogging();
-  Homie_setBrand("button");
-  Homie_setFirmware("button", "1.0.1");
+  Homie_setBrand(FW_NAME);
+  Homie_setFirmware(FW_NAME, FW_VERSION);
   Homie.setLoopFunction(loopHandler);
   buttonNode.advertise("on").settable(switchOnHandler);
   Homie.setup();
