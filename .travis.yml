@@ -9,15 +9,17 @@ cache:
 
 env:
     - PLATFORMIO_CI_SRC=src
+    - PLATFORMIO_CI_SRC=presence
+    - PLATFORMIO_CI_SRC=aire
+    - PLATFORMIO_CI_SRC=button
 
 install:
     - pip install -U platformio
-
-    # get Homie 2.0 developer branch
     - wget https://github.com/marvinroger/homie-esp8266/archive/develop.zip -O /tmp/homiedevelop.zip
     - unzip /tmp/homiedevelop.zip -d /tmp
 
 script:
-    - mkdir -p $(pwd)/tmp
-    - platformio ci --src="presence" --lib="/tmp/homie-esp8266-develop" --project-conf=platformio.ini --keep-build-dir --build-dir=$(pwd)/tmp
-    - curl -F upload=@$(pwd)/tmp/.pioenvs/nodemcu/firmware.bin -F description="press your things" http://artifacts.myftp.biz:9080/upload
+    - BUILD_DIR=$(pwd)/tmp/$PLATFORMIO_CI_SRC
+    - mkdir -p $BUILD_DIR
+    - platformio ci --lib="/tmp/homie-esp8266-develop" --project-conf=platformio.ini --keep-build-dir --build-dir=$BUILD_DIR
+    - curl -F upload=@$BUILD_DIR/.pioenvs/nodemcu/firmware.bin -F description="press your things" http://artifacts.myftp.biz:9080/upload
