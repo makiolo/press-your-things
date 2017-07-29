@@ -1,22 +1,18 @@
 language: python
 python:
     - "2.7"
-
 sudo: false
 cache:
     directories:
         - "~/.platformio"
-
 env:
     - PLATFORMIO_CI_SRC=aire
     - PLATFORMIO_CI_SRC=button
     - PLATFORMIO_CI_SRC=presence
-
 install:
     - pip install -U platformio
     - wget https://github.com/marvinroger/homie-esp8266/archive/develop.zip -O /tmp/homiedevelop.zip
     - unzip /tmp/homiedevelop.zip -d /tmp
-
 script:
     - BUILD_DIR=$(pwd)/tmp/$PLATFORMIO_CI_SRC
     - mkdir -p $BUILD_DIR
