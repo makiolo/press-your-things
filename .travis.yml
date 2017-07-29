@@ -8,8 +8,9 @@ cache:
         - "~/.platformio"
 
 env:
-    - PLATFORMIO_CI_SRC=presence
+    - PLATFORMIO_CI_SRC=aire
     - PLATFORMIO_CI_SRC=button
+    - PLATFORMIO_CI_SRC=presence
 
 install:
     - pip install -U platformio
