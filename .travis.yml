@@ -11,7 +11,7 @@ env:
     - PLATFORMIO_CI_SRC=presence
 install:
     - pip install -U platformio
-    - wget https://github.com/marvinroger/homie-esp8266/archive/develop.zip -O /tmp/homiedevelop.zip
+    - wget https://github.com/makiolo/homie-esp8266/archive/develop.zip -O /tmp/homiedevelop.zip
     - unzip /tmp/homiedevelop.zip -d /tmp
 script:
     - BUILD_DIR=$(pwd)/tmp/$PLATFORMIO_CI_SRC
