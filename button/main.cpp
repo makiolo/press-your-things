@@ -1,6 +1,10 @@
 #include <Arduino.h>
 #include <Homie.h>
 #include <ArduinoOTA.h>
+#define FW_NAME "button"
+#define FW_VERSION "1.0.0"
+const char *__FLAGGED_FW_NAME = "\xbf\x84\xe4\x13\x54" FW_NAME "\x93\x44\x6b\xa7\x75";
+const char *__FLAGGED_FW_VERSION = "\x6a\x3f\x3e\x0e\xe1" FW_VERSION "\xb0\x30\x48\xd4\x1a";
 
 #if 0
 const int PIN_RELAY = 12;
@@ -135,8 +139,8 @@ void setup()
   //Homie.setLedPin(PIN_LED, LOW).setResetTrigger(PIN_BUTTON, LOW, 5000);
   Homie.disableLedFeedback();
   //Homie.disableLogging();
-  Homie_setBrand("button");
-  Homie_setFirmware("button", "1.0.3");
+  Homie_setBrand(FW_NAME);
+  Homie_setFirmware(FW_NAME, FW_VERSION);
   Homie.setLoopFunction(loopHandler);
   buttonNode.advertise("on").settable(switchOnHandler);
   Homie.setup();
