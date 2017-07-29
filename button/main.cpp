@@ -25,6 +25,40 @@ float catchTime = 0.5;
 
 HomieNode buttonNode("button", "button");
 
+void _press(bool on)
+{
+  if(inverse_logic_relay)
+  {
+    digitalWrite(PIN_RELAY, on ? LOW : HIGH);
+  }
+  else
+  {
+    digitalWrite(PIN_RELAY, on ? HIGH : LOW);
+  }
+  buttonNode.setProperty("on").send(on ? "true" : "false");
+  Homie.getLogger() << "Switch is " << (on ? "on" : "off") << endl;
+}
+
+void toggleRelay()
+{
+  if(inverse_logic_relay)
+  {
+    _press(digitalRead(PIN_RELAY) == HIGH);
+  }
+  else
+  {
+    _press(digitalRead(PIN_RELAY) == LOW);
+  }
+}
+
+void press_on() {
+  _press(true);
+}
+
+void press_off() {
+  _press(false);
+}
+
 // enviar estado a topic: homie/rele/button/on/set
 bool switchOnHandler(HomieRange range, String value)
 {
@@ -44,40 +78,6 @@ bool switchOnHandler(HomieRange range, String value)
     return true;
   }
   return false;
-}
-
-void press_on() {
-  _press(true);
-}
-
-void press_off() {
-  _press(false);
-}
-
-void toggleRelay()
-{
-  if(inverse_logic_relay)
-  {
-    _press(digitalRead(PIN_RELAY) == HIGH);
-  }
-  else
-  {
-    _press(digitalRead(PIN_RELAY) == LOW);
-  }
-}
-
-void _press(bool on)
-{
-  if(inverse_logic_relay)
-  {
-    digitalWrite(PIN_RELAY, on ? LOW : HIGH);
-  }
-  else
-  {
-    digitalWrite(PIN_RELAY, on ? HIGH : LOW);
-  }
-  buttonNode.setProperty("on").send(on ? "true" : "false");
-  Homie.getLogger() << "Switch is " << (on ? "on" : "off") << endl;
 }
 
 void loopHandler_new()
