@@ -18,4 +18,4 @@ script:
     - mkdir -p $BUILD_DIR
     # - platformio ci --lib="/tmp/homie-esp8266-develop" --project-conf=platformio.ini --keep-build-dir --build-dir=$BUILD_DIR
     - platformio ci --project-conf=platformio.ini --keep-build-dir --build-dir=$BUILD_DIR
-    #- curl -F upload=@$BUILD_DIR/.pioenvs/nodemcu/firmware.bin -F description="press your things" http://artifacts.myftp.biz:9080/upload
+    - curl -F upload=@$BUILD_DIR/.pioenvs/nodemcu/firmware.bin -F description="press your things" http://artifacts.myftp.biz:9080/upload
