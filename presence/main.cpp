@@ -29,7 +29,7 @@ void loopHandler()
   {
       int val1 = digitalRead(D1);
       int val2 = digitalRead(D2);
-      int val3 = digitalRead(D4);
+      int val3 = digitalRead(D3);
     
       bool p1 = (val1 == HIGH);
       bool p2 = (val2 == HIGH);
@@ -52,7 +52,7 @@ void loopHandler()
 
   int val1 = digitalRead(D1);
   int val2 = digitalRead(D2);
-  int val3 = digitalRead(D4);
+  int val3 = digitalRead(D3);
 
   bool p1 = (val1 == HIGH);
   bool p2 = (val2 == HIGH);
@@ -88,7 +88,7 @@ void setup()
   
   pinMode(D1, INPUT);
   pinMode(D2, INPUT);
-  pinMode(D4, INPUT);
+  pinMode(D3, INPUT);
 
   // homie
   Homie.disableLedFeedback();
