@@ -3,7 +3,7 @@
 #define FW_NAME "presence"
 #define FW_VERSION "1.0.0"
 const char *__FLAGGED_FW_NAME = "\xbf\x84\xe4\x13\x54" FW_NAME "\x93\x44\x6b\xa7\x75";
-const char *__FLAGGED_FW_VERSION = "\x6a\x3f\x3e\x0e\xe1" FW_VERSION "\xb0\x30\x48\xd4\x1a";
+const char *__FLAGGED_FW_VERSION = "\x6a\x3f\x3e\x0e\xe1" FW_VERSION "\xb0\x30\x48\xD4\x1a";
 
 HomieNode presence1("presence_1", "presence");
 HomieNode presence2("presence_2", "presence");
@@ -29,7 +29,7 @@ void loopHandler()
   {
       int val1 = digitalRead(D1);
       int val2 = digitalRead(D2);
-      int val3 = digitalRead(D3);
+      int val3 = digitalRead(D4);
     
       bool p1 = (val1 == HIGH);
       bool p2 = (val2 == HIGH);
@@ -52,7 +52,7 @@ void loopHandler()
 
   int val1 = digitalRead(D1);
   int val2 = digitalRead(D2);
-  int val3 = digitalRead(D3);
+  int val3 = digitalRead(D4);
 
   bool p1 = (val1 == HIGH);
   bool p2 = (val2 == HIGH);
@@ -88,11 +88,11 @@ void setup()
   
   pinMode(D1, INPUT);
   pinMode(D2, INPUT);
-  pinMode(D3, INPUT);
+  pinMode(D4, INPUT);
 
   // homie
   Homie.disableLedFeedback();
-  Homie.disableLogging();
+  // Homie.disableLogging();
   Homie_setBrand(FW_NAME);
   Homie_setFirmware(FW_NAME, FW_VERSION);
   Homie.setLoopFunction(loopHandler);
