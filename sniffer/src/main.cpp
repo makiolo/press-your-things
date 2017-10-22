@@ -2,8 +2,10 @@
 #include "./functions.h" 
 #define disable 0 
 #define enable  1 
+
 // uint8_t channel = 1; 
 unsigned int channel = 1; 
+
 void setup() { 
 	Serial.begin(57600); 
 	Serial.printf("\n\nSDK version:%s\n\r", system_get_sdk_version()); 
@@ -15,6 +17,7 @@ void setup() {
 	wifi_set_promiscuous_rx_cb(promisc_cb);   // Set up promiscuous callback 
 	wifi_promiscuous_enable(enable); 
 } 
+
 void loop() { 
 	channel = 1; 
 	wifi_set_channel(channel); 
