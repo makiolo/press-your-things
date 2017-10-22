@@ -237,9 +237,6 @@ void create_config()
 		JsonObject& root = jsonBuffer.createObject();
 		root["name"] = __FUNCTION_NAME;
 		root["device_id"] = __DEVICE_ID;
-		JsonObject& wifi_node = root.createNestedObject("wifi");
-		wifi_node["ssid"] = "MOVISTAR_92B3";
-		wifi_node["password"] = "5FAD3C90675A7365A3A9";
 		JsonObject& mqtt_node = root.createNestedObject("mqtt");
 		mqtt_node["host"] = "192.168.1.4";
 		mqtt_node["port"] = 1883;

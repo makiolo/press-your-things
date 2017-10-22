@@ -1,22 +1,4 @@
-/*
-
-# Homie enabled Sonoff Dual shutters
-
-Requires the Shutters library:
-https://github.com/marvinroger/arduino-shutters
-and the SonoffDual library:
-https://github.com/marvinroger/arduino-sonoff-dual
-
-## Features
-
- * Do a short press to close shutters
- if level != 0 or open shutters if level == 0
- * Do a long press to reset
-
-*/
-
 #include <Homie.h>
-
 #include <EEPROM.h>
 #include <SonoffDual.h>
 #include <Shutters.h>
