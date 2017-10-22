@@ -23,7 +23,7 @@ const bool inverse_logic_relay = false;
 const byte LED_BUILTIN1 = D2;
 const char *__DEVICE_ID = "custom_board";
 #endif
-const char *__FUNCTION_NAME = "device1";
+const char *__FUNCTION_NAME = "device5";
 const char *__FLAGGED_FW_NAME = "\xbf\x84\xe4\x13\x54" FW_NAME "\x93\x44\x6b\xa7\x75";
 const char *__FLAGGED_FW_VERSION = "\x6a\x3f\x3e\x0e\xe1" FW_VERSION "\xb0\x30\x48\xd4\x1a";
 
@@ -238,8 +238,8 @@ void create_config()
 		root["name"] = __FUNCTION_NAME;
 		root["device_id"] = __DEVICE_ID;
 		JsonObject& wifi_node = root.createNestedObject("wifi");
-		wifi_node["ssid"] = "XXXXXXXXXXX";
-		wifi_node["password"] = "XXXXXXXXXXXXXXXX";
+		wifi_node["ssid"] = "MOVISTAR_92B3";
+		wifi_node["password"] = "5FAD3C90675A7365A3A9";
 		JsonObject& mqtt_node = root.createNestedObject("mqtt");
 		mqtt_node["host"] = "192.168.1.4";
 		mqtt_node["port"] = 1883;
