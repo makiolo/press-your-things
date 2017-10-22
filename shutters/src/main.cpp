@@ -29,7 +29,7 @@ const char *__FUNCTION_NAME = "device1";
 const char *__FLAGGED_FW_NAME = "\xbf\x84\xe4\x13\x54" FW_NAME "\x93\x44\x6b\xa7\x75";
 const char *__FLAGGED_FW_VERSION = "\x6a\x3f\x3e\x0e\xe1" FW_VERSION "\xb0\x30\x48\xd4\x1a";
 
-const unsigned long COURSE_TIME = 30 * 1000;
+const unsigned long COURSE_TIME = 18 * 1000;
 const float CALIBRATION_RATIO = 0.1;
 
 const bool RELAY1_MOVE = true;
@@ -119,8 +119,8 @@ void create_config()
 		root["name"] = __FUNCTION_NAME;
 		root["device_id"] = __DEVICE_ID;
 		JsonObject& wifi_node = root.createNestedObject("wifi");
-		wifi_node["ssid"] = "XXXXXXXXXXXXXXXXXX";
-		wifi_node["password"] = "XXXXXXXXXXXXXXXXXXXXXX";
+		wifi_node["ssid"] = "MOVISTAR_92B3";
+		wifi_node["password"] = "5FAD3C90675A7365A3A9";
 		JsonObject& mqtt_node = root.createNestedObject("mqtt");
 		mqtt_node["host"] = "192.168.1.4";
 		mqtt_node["port"] = 1883;

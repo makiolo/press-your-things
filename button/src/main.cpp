@@ -7,7 +7,7 @@
 #define FW_VERSION "2.0.0"
 
 #ifndef SONOFF
-#define SONOFF 1
+#define SONOFF 0
 #endif
 
 #if SONOFF
@@ -17,13 +17,13 @@ const bool inverse_logic_relay = false;
 const byte LED_BUILTIN1 = 13;
 const char *__DEVICE_ID = "sonoff";
 #else
-const int PIN_BUTTON = D4;
-const int PIN_RELAY = D6;
+const int PIN_BUTTON = 0;
+const int PIN_RELAY = 2;
 const bool inverse_logic_relay = false;
-const byte LED_BUILTIN1 = D2;
-const char *__DEVICE_ID = "custom_board";
+const byte LED_BUILTIN1 = 1;
+const char *__DEVICE_ID = "custom";
 #endif
-const char *__FUNCTION_NAME = "device5";
+const char *__FUNCTION_NAME = "device1";
 const char *__FLAGGED_FW_NAME = "\xbf\x84\xe4\x13\x54" FW_NAME "\x93\x44\x6b\xa7\x75";
 const char *__FLAGGED_FW_VERSION = "\x6a\x3f\x3e\x0e\xe1" FW_VERSION "\xb0\x30\x48\xd4\x1a";
 
