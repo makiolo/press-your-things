@@ -6,13 +6,12 @@ cache:
     directories:
         - "~/.platformio"
 env:
-    # - SUBPROJECT=aire
-    - SUBPROJECT=button
-    # - SUBPROJECT=presence
+    - SUBPROJECT=button BOARD=sonoff
 install:
     - pip install -U platformio
 script:
     - BUILD_DIR=$(pwd)/tmp/$SUBPROJECT
     - mkdir -p $BUILD_DIR
-    - platformio run -d $SUBPROJECT --upload-port %1 -e sonoff -t upload --keep-build-dir --build-dir=$BUILD_DIR
-    - curl -F upload=@$BUILD_DIR/.pioenvs/nodemcu/firmware.bin -F description="press your things" http://artifacts.myftp.biz:9080/upload
+    - cd $SUBPROJECT
+    - platformio ci -P platformio.ini -e $BOARD --keep-build-dir --build-dir=$BUILD_DIR
+    - curl -F upload=@$BUILD_DIR/.pioenvs/nodemcu/firmware.bin -F description="$SUBPROJECT ($BOARD)" http://artifacts.myftp.biz:9080/upload
