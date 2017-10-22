@@ -1,22 +1,4 @@
-/*
-
-# Homie enabled Sonoff Dual shutters
-
-Requires the Shutters library:
-https://github.com/marvinroger/arduino-shutters
-and the SonoffDual library:
-https://github.com/marvinroger/arduino-sonoff-dual
-
-## Features
-
- * Do a short press to close shutters
- if level != 0 or open shutters if level == 0
- * Do a long press to reset
-
-*/
-
 #include <Homie.h>
-
 #include <EEPROM.h>
 #include <SonoffDual.h>
 #include <Shutters.h>
@@ -29,7 +11,7 @@ const char *__FUNCTION_NAME = "device1";
 const char *__FLAGGED_FW_NAME = "\xbf\x84\xe4\x13\x54" FW_NAME "\x93\x44\x6b\xa7\x75";
 const char *__FLAGGED_FW_VERSION = "\x6a\x3f\x3e\x0e\xe1" FW_VERSION "\xb0\x30\x48\xd4\x1a";
 
-const unsigned long COURSE_TIME = 30 * 1000;
+const unsigned long COURSE_TIME = 18 * 1000;
 const float CALIBRATION_RATIO = 0.1;
 
 const bool RELAY1_MOVE = true;
