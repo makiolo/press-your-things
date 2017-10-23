@@ -9,7 +9,7 @@ env:
     - SUBPROJECT=button BOARD=sonoff
     - SUBPROJECT=shutters BOARD=sonoff
     - SUBPROJECT=sniffer BOARD=sonoff
-    - SUBPROJECT=presence BOARD=nodemcu
+    # - SUBPROJECT=presence BOARD=nodemcu
     - SUBPROJECT=aire BOARD=nodemcu
 install:
     - pip install -U platformio
