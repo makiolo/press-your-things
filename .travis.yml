@@ -10,7 +10,7 @@ env:
     - SUBPROJECT=shutters BOARD=sonoff
     - SUBPROJECT=sniffer BOARD=sonoff
     # - SUBPROJECT=presence BOARD=nodemcu
-    - SUBPROJECT=aire BOARD=nodemcu
+    # - SUBPROJECT=aire BOARD=nodemcu
 install:
     - pip install -U platformio
 script:
