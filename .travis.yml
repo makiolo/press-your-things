@@ -20,3 +20,4 @@ script:
     # - platformio ci --project-conf=platformio.ini -e $BOARD --keep-build-dir --build-dir=$BUILD_DIR
     # - curl -F upload=@$BUILD_DIR/.pioenvs/nodemcu/firmware.bin -F description="$SUBPROJECT ($BOARD)" http://artifacts.myftp.biz:9080/upload
     - platformio run -d $SUBPROJECT -e $BOARD
+    - find $(pwd)/$SUBPROJECT/.pioenvs/$BOARD
