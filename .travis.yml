@@ -6,6 +6,8 @@ cache:
     directories:
         - "~/.platformio"
 env:
+    - SUBPROJECT=button BOARD=sonoff
+    - SUBPROJECT=shutters BOARD=sonoff
     - SUBPROJECT=sniffer BOARD=sonoff
 install:
     - pip install -U platformio
