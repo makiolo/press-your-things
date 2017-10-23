@@ -3,9 +3,10 @@
 #include <SonoffDual.h>
 #include <Shutters.h>
 #include <ArduinoJson.h>
+#include <ArduinoOTA.h>
 
 #define FW_NAME "shutters"
-#define FW_VERSION "1.0.0"
+#define FW_VERSION "1.0.1"
 const char *__DEVICE_ID = "sonoff_dual";
 const char *__FUNCTION_NAME = "device1";
 const char *__FLAGGED_FW_NAME = "\xbf\x84\xe4\x13\x54" FW_NAME "\x93\x44\x6b\xa7\x75";
