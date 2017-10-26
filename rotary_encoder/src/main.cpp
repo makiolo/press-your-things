@@ -20,7 +20,7 @@ void setup()
 
 void loop() 
 { 
-	if( digitalRead(pinBUTTON) == LOW)
+	if( (digitalRead(pinBUTTON) == LOW) && (encoderPosCount != 0) )
 	{
 		Serial.println ("Reset to 0");
 		encoderPosCount = 0;
