@@ -6,11 +6,14 @@ cache:
     directories:
         - "~/.platformio"
 env:
+    # - SUBPROJECT=presence BOARD=nodemcu
+    # - SUBPROJECT=aire BOARD=nodemcu
     - SUBPROJECT=button BOARD=sonoff
     - SUBPROJECT=shutters BOARD=sonoff
     - SUBPROJECT=sniffer BOARD=sonoff
-    # - SUBPROJECT=presence BOARD=nodemcu
-    # - SUBPROJECT=aire BOARD=nodemcu
+    - SUBPROJECT=rotary_encoder BOARD=nodemcu
+    - SUBPROJECT=luminance BOARD=nodemcu
+    - SUBPROJECT=temperature BOARD=nodemcu
 install:
     - pip install -U platformio
 script:
