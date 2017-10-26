@@ -15,12 +15,6 @@ const char *__FLAGGED_FW_VERSION = "\x6a\x3f\x3e\x0e\xe1" FW_VERSION "\xb0\x30\x
 const unsigned long COURSE_TIME = 18 * 1000;
 const float CALIBRATION_RATIO = 0.1;
 
-const bool RELAY1_MOVE = true;
-const bool RELAY1_STOP = false;
-
-const bool RELAY2_UP = true;
-const bool RELAY2_DOWN = false;
-
 const byte SHUTTERS_EEPROM_POSITION = 0;
 
 HomieNode shuttersNode("shutters", "shutters");
@@ -29,15 +23,15 @@ StaticJsonBuffer<4000> jsonBuffer;
 // Shutters
 
 void shuttersUp() {
-	SonoffDual.setRelays(RELAY1_MOVE, RELAY2_UP);
+	SonoffDual.setRelays(false, true);
 }
 
 void shuttersDown() {
-	SonoffDual.setRelays(RELAY1_MOVE, RELAY2_DOWN);
+	SonoffDual.setRelays(true, false);
 }
 
 void shuttersHalt() {
-	SonoffDual.setRelays(RELAY1_STOP, false);
+	SonoffDual.setRelays(false, false);
 }
 
 uint8_t shuttersGetState() {

@@ -20,10 +20,10 @@ const char *__DEVICE_ID = "sonoff";
 const int PIN_BUTTON = 0;
 const int PIN_RELAY = 2;
 const bool inverse_logic_relay = false;
-const byte LED_BUILTIN1 = 1;
+const byte LED_BUILTIN1 = -1;
 const char *__DEVICE_ID = "custom";
 #endif
-const char *__FUNCTION_NAME = "device1";
+const char *__FUNCTION_NAME = "device2";
 const char *__FLAGGED_FW_NAME = "\xbf\x84\xe4\x13\x54" FW_NAME "\x93\x44\x6b\xa7\x75";
 const char *__FLAGGED_FW_VERSION = "\x6a\x3f\x3e\x0e\xe1" FW_VERSION "\xb0\x30\x48\xd4\x1a";
 
@@ -119,20 +119,24 @@ protected:
 };
 
 SimpleButton buttonLogic(PIN_BUTTON, true);
+#if SONOFF
 SimpleButton buttonLogic2(14, false);
+#endif
 HomieNode buttonNode(__FUNCTION_NAME, __DEVICE_ID);
 StaticJsonBuffer<4000> jsonBuffer;
 
 void led_on()
 {
 	// Homie.getLogger() << "led on." << endl;
-	digitalWrite(LED_BUILTIN1, LOW);
+	if(LED_BUILTIN1 > 0)
+		digitalWrite(LED_BUILTIN1, LOW);
 }
 
 void led_off()
 {
 	// Homie.getLogger() << "led off." << endl;
-	digitalWrite(LED_BUILTIN1, HIGH);
+	if(LED_BUILTIN1 > 0)
+		digitalWrite(LED_BUILTIN1, HIGH);
 }
 
 void blink(int time_on, int time_off)
@@ -224,7 +228,9 @@ void longclick()
 void loopHandler()
 {
 	buttonLogic.tick();
+#if SONOFF
 	buttonLogic2.tick();
+#endif
 	ArduinoOTA.handle();
 }
 
@@ -237,6 +243,9 @@ void create_config()
 		JsonObject& root = jsonBuffer.createObject();
 		root["name"] = __FUNCTION_NAME;
 		root["device_id"] = __DEVICE_ID;
+		JsonObject& wifi_node = root.createNestedObject("wifi");
+		wifi_node["ssid"] = "MOVISTAR_92B3";
+		wifi_node["password"] = "5FAD3C90675A7365A3A9";
 		JsonObject& mqtt_node = root.createNestedObject("mqtt");
 		mqtt_node["host"] = "192.168.1.4";
 		mqtt_node["port"] = 1883;
@@ -268,12 +277,14 @@ void setup()
 	digitalWrite(PIN_RELAY, LOW);
 
 	// led feedback
-	Homie.setLedPin(LED_BUILTIN1, LOW);
-	// Homie.disableLedFeedback();
+	if(LED_BUILTIN1 > 0)
+		Homie.setLedPin(LED_BUILTIN1, LOW);
+	else
+		Homie.disableLedFeedback();
 
 	// reset config
-	Homie.setResetTrigger(PIN_BUTTON, LOW, reset_ticks);
-	// Homie.disableResetTrigger();
+	// Homie.setResetTrigger(PIN_BUTTON, LOW, reset_ticks);
+	Homie.disableResetTrigger();
 
 	// log
 	Homie.disableLogging();
@@ -288,7 +299,9 @@ void setup()
 
 	// configurar boton
 	buttonLogic.attachClick(singleclick);
+#if SONOFF
 	buttonLogic2.attachClick(singleclick);
+#endif
 	// buttonLogic.attachDoubleClick(doubleclick);
 	// buttonLogic.attachLongPressStop(longclick);
 	// buttonLogic.setDebounceTicks(bounce_ticks);
