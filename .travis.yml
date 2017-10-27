@@ -14,6 +14,8 @@ env:
     - SUBPROJECT=rotary_encoder BOARD=nodemcu
     - SUBPROJECT=luminance BOARD=nodemcu
     - SUBPROJECT=temperature BOARD=nodemcu
+    - SUBPROJECT=oled BOARD=nodemcu
+    - SUBPROJECT=oled2 BOARD=nodemcu
 install:
     - pip install -U platformio
 script:
@@ -24,3 +26,4 @@ script:
     # - curl -F upload=@$BUILD_DIR/.pioenvs/nodemcu/firmware.bin -F description="$SUBPROJECT ($BOARD)" http://artifacts.myftp.biz:9080/upload
     - platformio run -d $SUBPROJECT -e $BOARD
     - curl -F upload=@$(pwd)/$SUBPROJECT/.pioenvs/$BOARD/firmware.bin -F description="$SUBPROJECT ($BOARD)" http://artifacts.myftp.biz:9080/upload
+
