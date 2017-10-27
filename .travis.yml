@@ -17,6 +17,7 @@ env:
     - SUBPROJECT=oled BOARD=nodemcu
     - SUBPROJECT=oled2 BOARD=nodemcu
     - SUBPROJECT=reed_switch BOARD=nodemcu
+    - SUBPROJECT=servo BOARD=nodemcu
 install:
     - pip install -U platformio
 script:
