@@ -236,6 +236,7 @@ void loopHandler()
 
 void create_config()
 {
+	SPIFFS.begin();
 	if (!SPIFFS.exists("/homie/config.json"))
 	{
 		Homie.getLogger() << "No config.json, formatting SPIFFS and creating default ..." << endl;
@@ -244,8 +245,8 @@ void create_config()
 		root["name"] = __FUNCTION_NAME;
 		root["device_id"] = __DEVICE_ID;
 		JsonObject& wifi_node = root.createNestedObject("wifi");
-		wifi_node["ssid"] = "MOVISTAR_92B3";
-		wifi_node["password"] = "5FAD3C90675A7365A3A9";
+		wifi_node["ssid"] = "XXXXXXXXXXXXXXXX";
+		wifi_node["password"] = "XXXXXXXXXXXXXXXXXXXXXX";
 		JsonObject& mqtt_node = root.createNestedObject("mqtt");
 		mqtt_node["host"] = "192.168.1.4";
 		mqtt_node["port"] = 1883;
@@ -267,9 +268,6 @@ void setup()
 {
 	Serial.begin(115200);
 	Serial << endl << endl;
-
-	// will use SPIFFS
-	SPIFFS.begin();
 	create_config();
 
 	// config rele
