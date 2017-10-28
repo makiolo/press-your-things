@@ -1,6 +1,9 @@
 #include <Wire.h>  // Only needed for Arduino 1.6.5 and earlier
 #include "SSD1306.h" // alias for `#include "SSD1306Wire.h"`
 
+//
+// http://oleddisplay.squix.ch/#/home
+//
 #define WiFi_Logo_width 60
 #define WiFi_Logo_height 36
 const char WiFi_Logo_bits[] PROGMEM = {
