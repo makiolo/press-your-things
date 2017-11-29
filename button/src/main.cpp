@@ -4,7 +4,7 @@
 #include <ArduinoJson.h>
 
 #define FW_NAME "button"
-#define FW_VERSION "2.0.2"
+#define FW_VERSION "2.0.3"
 
 #ifndef DEBUG
 #define DEBUG 0
