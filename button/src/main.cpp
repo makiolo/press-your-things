@@ -4,7 +4,7 @@
 #include <ArduinoJson.h>
 
 #define FW_NAME "button"
-#define FW_VERSION "2.0.3"
+#define FW_VERSION "2.0.4"
 
 #ifndef DEBUG
 #define DEBUG 0
@@ -294,5 +294,5 @@ void setup()
 void loop()
 {
 	Homie.loop();
+	blink(2000, 200);
 }
-
