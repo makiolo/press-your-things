@@ -4,10 +4,14 @@
 #include <ArduinoJson.h>
 
 #define FW_NAME "button"
-#define FW_VERSION "2.0.0"
+#define FW_VERSION "2.0.2"
+
+#ifndef DEBUG
+#define DEBUG 0
+#endif
 
 #ifndef SONOFF
-#define SONOFF 0
+#define SONOFF 1
 #endif
 
 #if SONOFF
@@ -15,15 +19,15 @@ const int PIN_BUTTON = 0;
 const int PIN_RELAY = 12;
 const bool inverse_logic_relay = false;
 const byte LED_BUILTIN1 = 13;
-const char *__DEVICE_ID = "sonoff";
+const char *__NODE_ID = "sonoff";
 #else
 const int PIN_BUTTON = 0;
 const int PIN_RELAY = 2;
 const bool inverse_logic_relay = false;
 const byte LED_BUILTIN1 = -1;
-const char *__DEVICE_ID = "custom";
+const char *__NODE_ID = "custom";
 #endif
-const char *__FUNCTION_NAME = "device2";
+const char *__NODE_TYPE = "button";
 const char *__FLAGGED_FW_NAME = "\xbf\x84\xe4\x13\x54" FW_NAME "\x93\x44\x6b\xa7\x75";
 const char *__FLAGGED_FW_VERSION = "\x6a\x3f\x3e\x0e\xe1" FW_VERSION "\xb0\x30\x48\xd4\x1a";
 
@@ -122,19 +126,16 @@ SimpleButton buttonLogic(PIN_BUTTON, true);
 #if SONOFF
 SimpleButton buttonLogic2(14, false);
 #endif
-HomieNode buttonNode(__FUNCTION_NAME, __DEVICE_ID);
-StaticJsonBuffer<4000> jsonBuffer;
+HomieNode buttonNode(__NODE_TYPE, __NODE_ID);
 
 void led_on()
 {
-	// Homie.getLogger() << "led on." << endl;
 	if(LED_BUILTIN1 > 0)
 		digitalWrite(LED_BUILTIN1, LOW);
 }
 
 void led_off()
 {
-	// Homie.getLogger() << "led off." << endl;
 	if(LED_BUILTIN1 > 0)
 		digitalWrite(LED_BUILTIN1, HIGH);
 }
@@ -234,41 +235,15 @@ void loopHandler()
 	ArduinoOTA.handle();
 }
 
-void create_config()
-{
-	SPIFFS.begin();
-	if (!SPIFFS.exists("/homie/config.json"))
-	{
-		Homie.getLogger() << "No config.json, formatting SPIFFS and creating default ..." << endl;
-		SPIFFS.format();
-		JsonObject& root = jsonBuffer.createObject();
-		root["name"] = __FUNCTION_NAME;
-		root["device_id"] = __DEVICE_ID;
-		JsonObject& wifi_node = root.createNestedObject("wifi");
-		wifi_node["ssid"] = "XXXXXXXXXXXXXXXX";
-		wifi_node["password"] = "XXXXXXXXXXXXXXXXXXXXXX";
-		JsonObject& mqtt_node = root.createNestedObject("mqtt");
-		mqtt_node["host"] = "192.168.1.4";
-		mqtt_node["port"] = 1883;
-		JsonObject& ota_node = root.createNestedObject("ota");
-		ota_node["enabled"] = true;
-
-		File historyFile = SPIFFS.open("/homie/config.json", "w");
-		root.printTo(historyFile);
-		historyFile.close(); 
-		Homie.getLogger() << "writing /homie/config.json" << endl;
-		String output;
-		root.printTo(output);
-		Homie.getLogger() << "content config.json: " << endl;
-		Homie.getLogger() << output << endl;
-	}
-}
-
 void setup()
 {
 	Serial.begin(115200);
 	Serial << endl << endl;
-	create_config();
+
+#if DEBUG
+	SPIFFS.begin();
+	SPIFFS.format();
+#endif
 
 	// config rele
 	pinMode(PIN_RELAY, OUTPUT);
@@ -281,11 +256,13 @@ void setup()
 		Homie.disableLedFeedback();
 
 	// reset config
-	// Homie.setResetTrigger(PIN_BUTTON, LOW, reset_ticks);
-	Homie.disableResetTrigger();
+	Homie.setResetTrigger(PIN_BUTTON, LOW, reset_ticks);
+	// Homie.disableResetTrigger();
 
+#if !DEBUG
 	// log
 	Homie.disableLogging();
+#endif
 
 	// firmware
 	Homie_setBrand(FW_NAME);
