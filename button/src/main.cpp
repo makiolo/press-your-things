@@ -4,7 +4,7 @@
 #include <ArduinoJson.h>
 
 #define FW_NAME "button"
-#define FW_VERSION "2.0.4"
+#define FW_VERSION "2.0.5"
 
 #ifndef DEBUG
 #define DEBUG 0
@@ -251,9 +251,13 @@ void setup()
 
 	// led feedback
 	if(LED_BUILTIN1 > 0)
+	{
 		Homie.setLedPin(LED_BUILTIN1, LOW);
+	}
 	else
+	{
 		Homie.disableLedFeedback();
+	}
 
 	// reset config
 	Homie.setResetTrigger(PIN_BUTTON, LOW, reset_ticks);
@@ -294,5 +298,4 @@ void setup()
 void loop()
 {
 	Homie.loop();
-	blink(2000, 200);
 }
