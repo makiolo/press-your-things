@@ -240,11 +240,6 @@ void setup()
 	Serial.begin(115200);
 	Serial << endl << endl;
 
-#if DEBUG
-	SPIFFS.begin();
-	SPIFFS.format();
-#endif
-
 	// config rele
 	pinMode(PIN_RELAY, OUTPUT);
 	digitalWrite(PIN_RELAY, LOW);
@@ -260,8 +255,14 @@ void setup()
 	}
 
 	// reset config
-	Homie.setResetTrigger(PIN_BUTTON, LOW, reset_ticks);
-	// Homie.disableResetTrigger();
+	if(reset_ticks > 0)
+	{
+		Homie.setResetTrigger(PIN_BUTTON, LOW, reset_ticks);
+	}
+	else
+	{
+		Homie.disableResetTrigger();
+	}
 
 #if !DEBUG
 	// log
@@ -299,3 +300,4 @@ void loop()
 {
 	Homie.loop();
 }
+
