@@ -13,12 +13,60 @@ int pinALast;
 int aVal;
 boolean bCW;
 
+class pusher
+{
+public:
+	explicit pusher()
+	{
+		;
+	}
+
+	void begin()
+	{
+		pinMode (D3, OUTPUT);
+		pinMode (D4, OUTPUT);
+		stop();
+	}
+
+	void turn_left()
+	{
+		digitalWrite(D3, HIGH);
+		digitalWrite(D4, LOW);
+	}
+
+	void turn_right()
+	{
+		digitalWrite(D3, LOW);
+		digitalWrite(D4, HIGH);
+	}
+
+	void stop()
+	{
+		digitalWrite(D3, LOW);
+		digitalWrite(D4, LOW);
+	}
+
+	void push_button()
+	{
+		turn_left();
+		delay(300);
+		turn_right();
+		delay(600);
+		turn_left();
+		delay(50);
+		stop();
+	}
+};
+
+pusher p;
+
 void setup()
 {
+	p.begin();
 	pinMode (pinCLK, INPUT);
 	pinMode (pinDT, INPUT);
 	pinMode (pinBUTTON, INPUT_PULLUP);
-	pinALast = digitalRead(pinCLK);//Read Pin A 
+	pinALast = digitalRead(pinCLK);
 	Serial.begin(9600);
 	Serial.println("BEGIN");
 	Serial.println();
@@ -26,10 +74,11 @@ void setup()
 
 void loop() 
 { 
-	if( (digitalRead(pinBUTTON) == LOW) && (encoderPosCount != 0) )
+	if(digitalRead(pinBUTTON) == LOW)
 	{
 		Serial.println ("Reset to 0");
 		encoderPosCount = 0;
+		p.push_button();
 	}
 	// 
 	aVal = digitalRead(pinCLK);

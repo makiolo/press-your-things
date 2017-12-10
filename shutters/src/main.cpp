@@ -5,22 +5,21 @@
 #include <ArduinoJson.h>
 #include <ArduinoOTA.h>
 
+#ifndef DEBUG
+#define DEBUG 0
+#endif
+
 #define FW_NAME "shutters"
-#define FW_VERSION "1.0.1"
-const char *__DEVICE_ID = "sonoff_dual";
-const char *__FUNCTION_NAME = "device1";
+#define FW_VERSION "2.0.0"
 const char *__FLAGGED_FW_NAME = "\xbf\x84\xe4\x13\x54" FW_NAME "\x93\x44\x6b\xa7\x75";
 const char *__FLAGGED_FW_VERSION = "\x6a\x3f\x3e\x0e\xe1" FW_VERSION "\xb0\x30\x48\xd4\x1a";
 
-const unsigned long COURSE_TIME = 18 * 1000;
+const unsigned long COURSE_TIME = 22 * 1000;
 const float CALIBRATION_RATIO = 0.1;
 
 const byte SHUTTERS_EEPROM_POSITION = 0;
 
 HomieNode shuttersNode("shutters", "shutters");
-StaticJsonBuffer<4000> jsonBuffer;
-
-// Shutters
 
 void shuttersUp() {
 	SonoffDual.setRelays(false, true);
@@ -86,48 +85,21 @@ bool shuttersLevelHandler(const HomieRange& range, const String& value)
 	return true;
 }
 
-void create_config()
-{
-	if (!SPIFFS.exists("/homie/config.json"))
-	{
-		Homie.getLogger() << "No config.json, formatting SPIFFS and creating default ..." << endl;
-		SPIFFS.format();
-		JsonObject& root = jsonBuffer.createObject();
-		root["name"] = __FUNCTION_NAME;
-		root["device_id"] = __DEVICE_ID;
-		JsonObject& mqtt_node = root.createNestedObject("mqtt");
-		mqtt_node["host"] = "192.168.1.4";
-		mqtt_node["port"] = 1883;
-		JsonObject& ota_node = root.createNestedObject("ota");
-		ota_node["enabled"] = true;
-
-		File historyFile = SPIFFS.open("/homie/config.json", "w");
-		root.printTo(historyFile);
-		historyFile.close(); 
-		Homie.getLogger() << "writing /homie/config.json" << endl;
-		String output;
-		root.printTo(output);
-		Homie.getLogger() << "content config.json: " << endl;
-		Homie.getLogger() << output << endl;
-	}
-}
-
 // Logic
-
 void setup() {
 	SonoffDual.setup();
 	EEPROM.begin(4);
 	shutters.begin();
 
-	// will use SPIFFS
-	SPIFFS.begin();
-	create_config();
-
 	// firmware
 	Homie_setBrand(FW_NAME);
 	Homie_setFirmware(FW_NAME, FW_VERSION);
 
+
+#if !DEBUG
+	// log
 	Homie.disableLogging();
+#endif
 	Homie.disableResetTrigger();
 	Homie.setLedPin(SonoffDual.LED_PIN, SonoffDual.LED_ON);
 	Homie.onEvent(onHomieEvent);

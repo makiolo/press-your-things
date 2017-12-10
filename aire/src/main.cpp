@@ -1,206 +1,192 @@
 #include <Arduino.h>
-#include <ArduinoOTA.h>
 #include <Homie.h>
+#include <ArduinoOTA.h>
+
+#ifndef DEBUG
+#define DEBUG 0
+#endif
+
 #define FW_NAME "aire"
-#define FW_VERSION "1.0.0"
+#define FW_VERSION "2.0.0"
 const char *__FLAGGED_FW_NAME = "\xbf\x84\xe4\x13\x54" FW_NAME "\x93\x44\x6b\xa7\x75";
 const char *__FLAGGED_FW_VERSION = "\x6a\x3f\x3e\x0e\xe1" FW_VERSION "\xb0\x30\x48\xd4\x1a";
 
-#include <Servo.h>
-#include <DHT.h>
-#define DHTPIN D4     // what digital pin the DHT22 is conected to
-#define DHTTYPE DHT22   // there are multiple kinds of DHT sensors
+HomieNode buttonNode("button", "button");
 
-const int TEMPERATURE_INTERVAL = 10 * 1000UL;
-unsigned long lastTemperatureSent = 0;
-const int PIN_SERVO = D1;
-const int PIN_RELAY = D0;
-const int PIN_DUST = D6;
-
-DHT dht(DHTPIN, DHTTYPE);
-Servo servoMotor;
-int request_button_state = 0;
-int angle_min = 45;
-int angle_max = 180 - angle_min;
-
-HomieNode lightNode("button", "button");
-HomieNode temperatureNode("temperature", "temperature");
-HomieNode humidityNode("humidity", "humidity");
-HomieNode heatIndexNode("heat_index", "heat_index");
-HomieNode dustNode("dust", "dust");
-
-void push_button()
+class pusher
 {
-  if(request_button_state != 0)
-  {
-    Homie.getLogger() << "state: " << request_button_state << endl;
-  }
-  switch(request_button_state)
-  {
-    case 0:
-    {
-      return;
-    }
-    case 1:
-    {
-        Homie.getLogger() << "begin push button" << endl;
-        HomieInternals::Interface::get().getSendingPromise().setNode(lightNode).setProperty("on").setQos(2).setRetained(true).overwriteSetter(true).setRange({ .isRange = false, .index = 0 }).send("true");
-        digitalWrite(PIN_RELAY, LOW);
-        request_button_state++;
-        return;
-     }
-    case 2:
-    {
-        servoMotor.write(angle_min);
-        request_button_state++;
-        return;
-     }
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    {
-        delay(100);
-        request_button_state++;
-        return;
-     }
-    case 9:
-    {
-        servoMotor.write(angle_max);
-        request_button_state++;
-        return;
-     }
-    case 10:
-    case 11:
-    case 12:
-    case 13:
-    case 14:
-    case 15:
-    {
-        delay(100);
-        request_button_state++;
-        return;
-     }
-    case 16:
-    {
-        servoMotor.write(angle_min);
-        request_button_state++;
-        return;
-     }
-    case 17:
-    case 18:
-    case 19:
-    case 20:
-    case 21:
-    case 22:
-    {
-        delay(100);
-        request_button_state++;
-        return;
-     }
-    case 23:
-    {
-        Homie.getLogger() << "end push button" << endl;
-        //
-        request_button_state = 0;
-        HomieInternals::Interface::get().getSendingPromise().setNode(lightNode).setProperty("on").setQos(2).setRetained(true).overwriteSetter(true).setRange({ .isRange = false, .index = 0 }).send("false");
-        digitalWrite(PIN_RELAY, HIGH);
-        return;
-     }
-  }
-}
+public:
+	explicit pusher()
+		: _state(7)
+	{
+		;
+	}
 
-const int total_buffer = 6;
-float data[total_buffer];
-int data_index = 0;
+	void begin()
+	{
+		pinMode (D3, OUTPUT);
+		pinMode (D4, OUTPUT);
+		stop();
+	}
 
-void loopHandler() {
-  if (millis() - lastTemperatureSent >= TEMPERATURE_INTERVAL || lastTemperatureSent == 0)
-  {
-    digitalWrite(PIN_DUST, LOW); // power on the LED
-    delayMicroseconds(280);
-    data[data_index] = analogRead(0);
-    delayMicroseconds(40);
-    digitalWrite(PIN_DUST, HIGH); // turn the LED off
+	void turn_left()
+	{
+		digitalWrite(D3, HIGH);
+		digitalWrite(D4, LOW);
+	}
 
-    float average = 0;
-    for(int i = 0; i < total_buffer; ++i)
-    {
-        average += data[i];
-    }
-    average /= total_buffer;
-   
-    dustNode.setProperty("density").send(String(average));
-    data_index++;
-    if(data_index >= total_buffer)
-    {
-      data_index = 0;
-    }
+	void turn_right()
+	{
+		digitalWrite(D3, LOW);
+		digitalWrite(D4, HIGH);
+	}
 
-    //////////////////////////////////
-    
-    float h = dht.readHumidity();
-    float t = dht.readTemperature();
+	void stop()
+	{
+		digitalWrite(D3, LOW);
+		digitalWrite(D4, LOW);
+	}
 
-    if (isnan(h) || isnan(t)) {
-      Serial.println("Failed to read from DHT sensor!");
-      lastTemperatureSent = 0;
-      return;
-    }
+	void push_button()
+	{
+		if(_state == 7)
+		{
+			Homie.getLogger() << "push button!" << endl;
+			_state = 0;
+		}
+	}
 
-    // Compute heat index in Celsius (isFahreheit = false)
-    float hic = dht.computeHeatIndex(t, h, false);
+	void cancel()
+	{
+		_state = 7;
+	}
 
-    Homie.getLogger() << "temperature: " << t << endl;
-    Homie.getLogger() << "humidity: " << h << endl;
-    Homie.getLogger() << "sensation: " << hic << endl;
+	void update()
+	{
+		if(_state == 0)
+		{
+			Homie.getLogger() << "state 0 !" << endl;
+			buttonNode.setProperty("doing").send("true");
+			turn_left();
+			_stamp = millis();
+			_state = 1;
+		}
+		else if(_state == 1)
+		{
+			Homie.getLogger() << "state 1 !" << endl;
+			delay(300);
+			_stamp = millis();
+			_state = 2;
+		}
+		else if(_state == 2)
+		{
+			Homie.getLogger() << "state 2 !" << endl;
+			turn_right();
+			_stamp = millis();
+			_state = 3;
+		}
+		else if(_state == 3)
+		{
+			Homie.getLogger() << "state 3 !" << endl;
+			delay(800);
+			_stamp = millis();
+			_state = 4;
+		}
+		else if(_state == 4)
+		{
+			Homie.getLogger() << "state 4 !" << endl;
+			turn_left();
+			_stamp = millis();
+			_state = 5;
+		}
+		else if(_state == 5)
+		{
+			Homie.getLogger() << "state 5 !" << endl;
+			delay(50);
+			_stamp = millis();
+			_state = 6;
+		}
+		else if(_state == 6)
+		{
+			Homie.getLogger() << "state 6 !" << endl;
+			stop();
+			buttonNode.setProperty("doing").send("false");
+			_stamp = millis();
+			_state = 7;
+		}
+	}
 
-    temperatureNode.setProperty("temperature").send(String(t));
-    humidityNode.setProperty("humidity").send(String(h));
-    heatIndexNode.setProperty("heat_index").send(String(hic));
+	int _state;
+	// tiempo desde el estado anterior
+	unsigned long _stamp;
+};
 
-    lastTemperatureSent = millis();
-  }
+pusher p;
+
+void loopHandler()
+{
+	p.update();
+	ArduinoOTA.handle();
 }
 
 bool nodeHandler(const HomieRange& range, const String& value)
 {
-  if((request_button_state == 0) && (value == "true"))
-  {
-    request_button_state = 1;
-  }
-  return true;
+	if(value == "true")
+	{
+		p.push_button();
+	}
+	else if(value == "false")
+	{
+		p.cancel();
+	}
+
+	return true;
 }
 
 void setup()
 {
-  Serial.begin(115200);
-  Serial << endl << endl;
-  pinMode(PIN_DUST, OUTPUT);
-  pinMode(PIN_RELAY, OUTPUT);
-  digitalWrite(PIN_RELAY, HIGH);
+	Serial.begin(115200);
+	Serial << endl << endl;
 
-  // servo
-  pinMode(PIN_SERVO, OUTPUT);
-  servoMotor.attach(PIN_SERVO);
-  servoMotor.write(angle_min);
+	pinMode (D3, OUTPUT);
+	pinMode (D4, OUTPUT);
+	digitalWrite(D3, LOW);
+	digitalWrite(D4, LOW);
 
-  // homie
-  Homie.disableLogging();
-  Homie_setBrand(FW_NAME);
-  Homie_setFirmware(FW_NAME, FW_VERSION);
-  Homie.setLoopFunction(loopHandler);
-  lightNode.advertise("on").settable(nodeHandler);
-  Homie.setup();
-  ArduinoOTA.setHostname(Homie.getConfiguration().deviceId);
-  ArduinoOTA.begin();
+	int pinCLK = D7;
+	int pinDT = D6;
+	int pinBUTTON = D5;
+	pinMode (pinCLK, INPUT);
+	pinMode (pinDT, INPUT);
+	pinMode (pinBUTTON, INPUT_PULLUP);
+
+	// reset config
+	Homie.disableResetTrigger();
+
+#if !DEBUG
+	// log
+	Homie.disableLogging();
+#endif
+
+	// firmware
+	Homie_setBrand(FW_NAME);
+	Homie_setFirmware(FW_NAME, FW_VERSION);
+
+	// polls and callback
+	Homie.setLoopFunction(loopHandler);
+	buttonNode.advertise("request").settable(nodeHandler);
+	buttonNode.advertise("doing");
+
+	// configure homie
+	Homie.setup();
+
+	// configure OTA
+	ArduinoOTA.setHostname(Homie.getConfiguration().deviceId);
+	ArduinoOTA.begin();
 }
 
 void loop()
 {
-  Homie.loop();
-  ArduinoOTA.handle();
-  push_button();
+	Homie.loop();
 }
+
