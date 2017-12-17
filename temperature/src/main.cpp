@@ -1,9 +1,15 @@
 #include <Arduino.h>
+#include <Hash.h>
+#include <ESPAsyncTCP.h>
+
 #include <Homie.h>
 #include <ArduinoOTA.h>
 #include <ArduinoJson.h>
+// oled
 #include <Wire.h>
 #include <SSD1306.h>
+// temperature
+#include <Adafruit_Sensor.h>
 #include <DHT.h>
 
 #define FW_NAME "temperature"
