@@ -7,7 +7,7 @@
 #include <DHT.h>
 
 #define FW_NAME "temperature"
-#define FW_VERSION "2.0.0"
+#define FW_VERSION "2.0.1"
 
 #ifndef DEBUG
 #define DEBUG 0
@@ -165,6 +165,15 @@ void loopHandler()
 	    Homie.getLogger() << "Humidity: " << h << " °C" << endl;
 	    Homie.getLogger() << "Sensation: " << hic << " °C" << endl;
 
+		StaticJsonBuffer<200> jsonBuffer;
+		JsonObject& root = jsonBuffer.createObject();
+		root["temperature"] = t;
+		root["Humidity"] = h;
+		root["sensation"] = hic;
+		String output;
+		root.printTo(output);
+		temperatureNode.setProperty("data").send(output);
+
 		temperatureNode.setProperty("value").send(String(t));
 		humidityNode.setProperty("value").send(String(h));
 		sensationNode.setProperty("value").send(String(hic));
@@ -217,6 +226,7 @@ void setup()
 	// polls and callback
 	Homie.setLoopFunction(loopHandler);
 	temperatureNode.advertise("value");
+	temperatureNode.advertise("data");
 	humidityNode.advertise("value");
 	sensationNode.advertise("value");
 
