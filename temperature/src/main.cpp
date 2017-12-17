@@ -13,7 +13,7 @@
 #include <DHT.h>
 
 #define FW_NAME "temperature"
-#define FW_VERSION "2.0.1"
+#define FW_VERSION "2.0.2"
 
 #ifndef DEBUG
 #define DEBUG 0
@@ -174,7 +174,7 @@ void loopHandler()
 		StaticJsonBuffer<200> jsonBuffer;
 		JsonObject& root = jsonBuffer.createObject();
 		root["temperature"] = t;
-		root["Humidity"] = h;
+		root["humidity"] = h;
 		root["sensation"] = hic;
 		String output;
 		root.printTo(output);
