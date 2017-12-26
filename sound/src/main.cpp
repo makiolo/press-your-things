@@ -73,7 +73,8 @@ void loopHandler()
 			String output;
 			root.printTo(output);
 
-			soundNode.setProperty("value").send( output );
+			soundNode.setProperty("data").send( output );
+			soundNode.setProperty("value").send( String(integral_sound) );
 			counter += 1;
 			load = false;
 		}
@@ -89,6 +90,7 @@ void setup()
 	Serial << endl << endl;
 
 	pinMode (PIN_DSOUND, INPUT);
+	soundNode.advertise("data");
 	soundNode.advertise("value");
 
 #if !DEBUG
